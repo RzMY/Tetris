@@ -1,17 +1,31 @@
+import random
 import pygame
 import sys
 from pygame.locals import *
+from block import *
+from const import *
+from blockGroup import *
 
 pygame.init()
 DISPLAYSURF = pygame.display.set_mode((600, 1000))
-Image = pygame.image.load('pic/yellow.png')
-Rect = Image.get_rect()
-Rect.center = (300, 500)
+
+blockGroups = []
+for x in range(GAME_ROW):
+    conf = BlockGroup.GenerateBlockGroupConfig(x*4, x)
+    blockGroups.append(BlockGroup(40, 40, conf, (0, 0)))
 
 while True:
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
-    DISPLAYSURF.blit(Image, Rect)
+    
+    for bg in blockGroups:
+        bg.update()
+    
+    DISPLAYSURF.fill((0,0,0))
+    
+    for bg in blockGroups:
+        bg.draw(DISPLAYSURF)
+    
     pygame.display.update()
